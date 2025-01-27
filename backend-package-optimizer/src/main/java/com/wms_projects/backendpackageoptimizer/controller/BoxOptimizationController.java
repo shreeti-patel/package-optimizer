@@ -3,6 +3,7 @@ import com.wms_projects.backendpackageoptimizer.model.BoxRequest;
 import com.wms_projects.backendpackageoptimizer.model.Box;
 import com.wms_projects.backendpackageoptimizer.service.BoxOptimizationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,12 @@ public class BoxOptimizationController {
         log.info("Received request to optimize box with data: " + boxRequest);
         return boxOptimizationService.findSmallestFittingBox(boxRequest.getProducts(), boxRequest.getAvailableBoxes());
     }
+
+    @GetMapping("/")
+    public String home() {
+        return "Welcome to the backend!";
+    }
+
 }
 
 // @RestController
