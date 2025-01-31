@@ -40,6 +40,9 @@ public class Box {
         this.height = height;
     }
 
+    public double getVolume() {
+        return length * width * height;
+    }
     @Override
     public String toString() {
         return "Box{" +

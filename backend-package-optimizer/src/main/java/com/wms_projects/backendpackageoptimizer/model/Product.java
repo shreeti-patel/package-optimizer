@@ -48,4 +48,13 @@ public class Product {
                 ", height=" + height +
                 '}';
     }
+
+    public double getSmallestDimension() {
+        return Math.min(length, Math.min(width, height));
+    }
+
+    public double getVolume() {
+        return this.length * this.width * this.height;
+    }
+    
 }
