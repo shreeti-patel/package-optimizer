@@ -43,6 +43,7 @@ public class Box {
     public double getVolume() {
         return length * width * height;
     }
+
     @Override
     public String toString() {
         return "Box{" +

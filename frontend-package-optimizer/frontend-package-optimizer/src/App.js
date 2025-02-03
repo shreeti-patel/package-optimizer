@@ -1,153 +1,202 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const App = () => {
-  const [products, setProducts] = useState([{ length: '', width: '', height: '' }]);
-  const [availableBoxes, setAvailableBoxes] = useState([{ length: '', width: '', height: '' }]);
-  const [optimalBox, setOptimalBox] = useState(null);
-  const [error, setError] = useState('');
+function BoxOptimizer() {
+  const [availableBoxes, setAvailableBoxes] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [results, setResults] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Handle input changes for product dimensions
-  const handleProductChange = (index, e) => {
-    const newProducts = [...products];
-    newProducts[index][e.target.name] = e.target.value;
-    setProducts(newProducts);
-  };
+  // Handle CSV file upload
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
 
-  // Handle input changes for box dimensions
-  const handleBoxChange = (index, e) => {
-    const newBoxes = [...availableBoxes];
-    newBoxes[index][e.target.name] = e.target.value;
-    setAvailableBoxes(newBoxes);
-  };
-
-  // Add a new product input field
-  const addProduct = () => {
-    setProducts([...products, { length: '', width: '', height: '' }]);
-  };
-
-  // Add a new box input field
-  const addBox = () => {
-    setAvailableBoxes([...availableBoxes, { length: '', width: '', height: '' }]);
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    console.log("they touched the butt :P")
-    const requestData = {
-      products: products.map(product => ({
-        length: parseFloat(product.length),
-        width: parseFloat(product.width),
-        height: parseFloat(product.height),
-      })),
-      availableBoxes: availableBoxes.map(box => ({
-        length: parseFloat(box.length),
-        width: parseFloat(box.width),
-        height: parseFloat(box.height),
-      })),
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const parsedData = parseCSV(text);
+      setAvailableBoxes(parsedData.boxes);
+      setOrders(parsedData.orders);
     };
-    console.log(requestData);
-    try {
-      const response = await fetch('http://localhost:8080/api/optimize-box', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setOptimalBox(data);
-        console.log(data);
-      } else {
-        setError('Error with the request.');
+
+    reader.readAsText(file);
+  };
+
+  // Parse CSV content
+  const parseCSV = (csvText) => {
+    const lines = csvText.split('\n');
+    const boxes = [];
+    const orders = [];
+    let orderId = 1;
+
+    lines.forEach(line => {
+      const [type, ...values] = line.trim().split(',');
+      
+      if (type === 'BOX') {
+        const [l, w, h] = values.map(Number);
+        boxes.push({ length: l, width: w, height: h });
+      } else if (type === 'ORDER') {
+        const products = [];
+        for (let i = 0; i < values.length; i += 3) {
+          const [l, w, h] = values.slice(i, i + 3).map(Number);
+          products.push({ length: l, width: w, height: h });
+        }
+        orders.push({ id: orderId++, products });
       }
-    } catch (err) {
-      setError('Error with the request.');
+    });
+
+    return { boxes, orders };
+  };
+
+  // Process orders through backend
+  const processOrders = async () => {
+    setIsProcessing(true);
+    try {
+      console.log("processing orders :P");
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/orders/bulk`,
+        {
+          availableBoxes,
+          orders: orders.map(o => ({ products: o.products }))
+        }
+      );
+
+      // Map results to orders
+      const processedResults = response.data.map((line, index) => {
+        const parts = line.split(',');
+        return {
+          orderNumber: orders[index].id,
+          products: orders[index].products,
+          boxAssigned: parts[parts.length - 1]
+        };
+      });
+
+      setResults(processedResults);
+    } catch (error) {
+      console.error('Processing error:', error);
     }
+    setIsProcessing(false);
   };
 
   return (
-    <div className="App">
-      <h1>Package Optimizer</h1>
-      <form onSubmit={handleSubmit}>
-        <h3>Products</h3>
-        {products.map((product, index) => (
-          <div key={index}>
-            <input
-              type="number"
-              name="length"
-              placeholder="Length"
-              value={product.length}
-              onChange={(e) => handleProductChange(index, e)}
-              required
-            />
-            <input
-              type="number"
-              name="width"
-              placeholder="Width"
-              value={product.width}
-              onChange={(e) => handleProductChange(index, e)}
-              required
-            />
-            <input
-              type="number"
-              name="height"
-              placeholder="Height"
-              value={product.height}
-              onChange={(e) => handleProductChange(index, e)}
-              required
-            />
+    <div className="container">
+      <h1>Box Assignment Optimizer</h1>
+      
+      {/* File Upload Section */}
+      <div className="section">
+        <h2>1. Import CSV</h2>
+        <input 
+          type="file" 
+          accept=".csv" 
+          onChange={handleFileUpload}
+        />
+      </div>
+
+      {/* Available Boxes Display */}
+      {availableBoxes.length > 0 && (
+        <div className="section">
+          <h2>Available Box Sizes</h2>
+          <div className="box-list">
+            {availableBoxes.map((box, index) => (
+              <span key={index} className="box-tag">
+                {`${box.length}x${box.width}x${box.height}`}
+              </span>
+            ))}
           </div>
-        ))}
-        <button type="button" onClick={addProduct}>Add Product</button>
-
-        <h3>Available Boxes</h3>
-        {availableBoxes.map((box, index) => (
-          <div key={index}>
-            <input
-              type="number"
-              name="length"
-              placeholder="Length"
-              value={box.length}
-              onChange={(e) => handleBoxChange(index, e)}
-              required
-            />
-            <input
-              type="number"
-              name="width"
-              placeholder="Width"
-              value={box.width}
-              onChange={(e) => handleBoxChange(index, e)}
-              required
-            />
-            <input
-              type="number"
-              name="height"
-              placeholder="Height"
-              value={box.height}
-              onChange={(e) => handleBoxChange(index, e)}
-              required
-            />
-          </div>
-        ))}
-        <button type="button" onClick={addBox}>Add Box</button>
-
-        <button type="submit" onClick={handleSubmit}>Optimize</button>
-      </form>
-
-      {optimalBox && (
-        <div>
-          <h2>Optimal Box:</h2>
-          <p>{`The best box size is: ${optimalBox.length} x ${optimalBox.width} x ${optimalBox.height}`}</p>
-          {/* Display additional details from the response if needed */}
         </div>
       )}
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {/* Processing Button */}
+      <div className="section">
+        <h2>2. Run Box Assignment</h2>
+        <button 
+          onClick={processOrders} 
+          disabled={!orders.length || isProcessing}
+        >
+          {isProcessing ? 'Processing...' : 'Run Box Assignment'}
+        </button>
+      </div>
+
+      {/* Results Table */}
+      {results.length > 0 && (
+        <div className="section">
+          <h2>Results</h2>
+          <table className="results-table">
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Products</th>
+                <th>Box Assigned</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map((result) => (
+                <tr key={result.orderNumber}>
+                  <td>{result.orderNumber}</td>
+                  <td>
+                    {result.products.map((product, idx) => (
+                      <div key={idx}>
+                        Product {idx + 1}: {product.length}x{product.width}x{product.height}
+                      </div>
+                    ))}
+                  </td>
+                  <td>{result.boxAssigned}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <style jsx>{`
+        .container {
+          padding: 20px;
+          max-width: 1000px;
+          margin: 0 auto;
+        }
+        .section {
+          margin: 30px 0;
+          padding: 20px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+        }
+        .box-list {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .box-tag {
+          padding: 5px 10px;
+          background: #e0f0ff;
+          border-radius: 4px;
+        }
+        .results-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .results-table th, .results-table td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+        }
+        .results-table th {
+          background-color: #f5f5f5;
+        }
+        button {
+          padding: 10px 20px;
+          background: #0070f3;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        button:disabled {
+          background: #cccccc;
+          cursor: not-allowed;
+        }
+      `}</style>
     </div>
   );
-};
+}
 
-export default App;
+export default BoxOptimizer;
