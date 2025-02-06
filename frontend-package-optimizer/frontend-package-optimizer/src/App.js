@@ -22,6 +22,19 @@ function BoxOptimizer() {
     reader.readAsText(file);
   };
 
+  // Fetch and use demo CSV from backend
+  const handleDemoUpload = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/demo-csv`);
+      const text = await response.text();
+      const parsedData = parseCSV(text);
+      setAvailableBoxes(parsedData.boxes);
+      setOrders(parsedData.orders);
+    } catch (error) {
+      console.error('Error fetching demo CSV:', error);
+    }
+  };
+
   // Parse CSV content
   const parseCSV = (csvText) => {
     const lines = csvText.split('\n');
@@ -31,7 +44,7 @@ function BoxOptimizer() {
 
     lines.forEach(line => {
       const [type, ...values] = line.trim().split(',');
-      
+
       if (type === 'BOX') {
         const [l, w, h] = values.map(Number);
         boxes.push({ length: l, width: w, height: h });
@@ -52,7 +65,7 @@ function BoxOptimizer() {
   const processOrders = async () => {
     setIsProcessing(true);
     try {
-      console.log("processing orders :P");
+      console.log("Processing orders...");
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/api/orders/bulk`,
         {
@@ -90,6 +103,12 @@ function BoxOptimizer() {
           accept=".csv" 
           onChange={handleFileUpload}
         />
+
+        <div style={{ textAlign: 'center', margin: '10px 0', fontWeight: 'bold' }}>
+          OR
+        </div>
+
+        <button onClick={handleDemoUpload}>Upload Demo CSV</button>
       </div>
 
       {/* Available Boxes Display */}
