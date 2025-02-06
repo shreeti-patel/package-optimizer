@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useTable, useSortBy } from 'react-table';
+import './App.css'; // Link to styles
 
 function BoxOptimizer() {
   const [availableBoxes, setAvailableBoxes] = useState([]);
   const [orders, setOrders] = useState([]);
   const [results, setResults] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+
 
   // Handle CSV file upload
   const handleFileUpload = (event) => {
@@ -90,6 +93,42 @@ function BoxOptimizer() {
     }
     setIsProcessing(false);
   };
+  // 📊 Define table columns
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Order Number',
+        accessor: 'orderNumber',
+      },
+      {
+        Header: 'Products',
+        accessor: 'products',
+        Cell: ({ value }) => (
+          <div>
+            {value.map((product, idx) => (
+              <div key={idx}>
+                📦 {product.length}x{product.width}x{product.height}
+              </div>
+            ))}
+          </div>
+        ),
+      },
+      {
+        Header: 'Box Assigned',
+        accessor: 'boxAssigned',
+      },
+    ],
+    []
+  );
+
+  // 🔽 Use React Table with sorting
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      columns,
+      data: results,
+    },
+    useSortBy
+  );
 
   return (
     <div className="container">
@@ -137,34 +176,40 @@ function BoxOptimizer() {
       </div>
 
       {/* Results Table */}
-      {results.length > 0 && (
-        <div className="section">
+        {results.length > 0 && (
+          <div className="section table-container">
           <h2>Results</h2>
-          <table className="results-table">
+          <table {...getTableProps()} className="results-table">
             <thead>
-              <tr>
-                <th>Order Number</th>
-                <th>Products</th>
-                <th>Box Assigned</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((result) => (
-                <tr key={result.orderNumber}>
-                  <td>{result.orderNumber}</td>
-                  <td>
-                    {result.products.map((product, idx) => (
-                      <div key={idx}>
-                        Product {idx + 1}: {product.length}x{product.width}x{product.height}
-                      </div>
-                    ))}
-                  </td>
-                  <td>{result.boxAssigned}</td>
+              {headerGroups.map(headerGroup => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map(column => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className="sortable-header"
+                    >
+                      {column.render('Header')}
+                      <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                    </th>
+                  ))}
                 </tr>
               ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map(row => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map(cell => (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    ))}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
+      
       )}
 
       <style jsx>{`

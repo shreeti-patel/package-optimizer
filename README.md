@@ -1,7 +1,7 @@
 ### To Do:
 
 - [ ] Make sure backend logic make sense
--       [ ] Implement a greedy first fit algorithm
+- [ ] Implement a greedy first fit algorithm
 - [ ] Add remove Box or product functionality
 - [ ] Add Box name or lables (Box 1 or Box A)
 - [ ] Figure out 2D vs 3D visualization or do the bulk upload option 
