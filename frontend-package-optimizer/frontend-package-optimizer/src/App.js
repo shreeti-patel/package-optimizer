@@ -37,20 +37,42 @@ function BoxOptimizer() {
       console.error('Error fetching demo CSV:', error);
     }
   };
-
+  const boxColors = [
+    "#fce69b", // Yellow
+    "#f7d9c4", // Orange
+    "#c4b9db", // Purple
+    "#acdcdc", // Teal
+    "#f6ccc0", // Pink
+    "#bcdcec", // Light Blue
+    
+    // Add more colors if needed
+  ];
+  
+  // Assign colors based on box size or by order
+  
   // Parse CSV content
   const parseCSV = (csvText) => {
     const lines = csvText.split('\n');
     const boxes = [];
     const orders = [];
     let orderId = 1;
+    let colorIndex = 0;
 
     lines.forEach(line => {
       const [type, ...values] = line.trim().split(',');
-
+  
       if (type === 'BOX') {
         const [l, w, h] = values.map(Number);
-        boxes.push({ length: l, width: w, height: h });
+        const color = boxColors[colorIndex]; // Get color based on current index
+        boxes.push({ length: l, width: w, height: h, color });
+  
+        // Increment the color index
+        colorIndex++;
+  
+        // If all colors have been used, loop back to the beginning
+        if (colorIndex >= boxColors.length) {
+          colorIndex = 0;
+        }
       } else if (type === 'ORDER') {
         const products = [];
         for (let i = 0; i < values.length; i += 3) {
@@ -76,23 +98,33 @@ function BoxOptimizer() {
           orders: orders.map(o => ({ products: o.products }))
         }
       );
-
-      // Map results to orders
+  
+      // Map results to orders with box color and size information
       const processedResults = response.data.map((line, index) => {
         const parts = line.split(',');
+        const assignedBox = availableBoxes.find(
+          box => box.length === parseInt(parts[parts.length - 1].split('x')[0]) &&
+                 box.width === parseInt(parts[parts.length - 1].split('x')[1]) &&
+                 box.height === parseInt(parts[parts.length - 1].split('x')[2])
+        );
         return {
           orderNumber: orders[index].id,
           products: orders[index].products,
-          boxAssigned: parts[parts.length - 1]
+          boxAssigned: parts[parts.length - 1],
+          boxColor: assignedBox ? assignedBox.color : '#FFFFFF', // default to white if no box found
+          boxTag: assignedBox 
+            ? `<span class="box-tag" style="background-color:${assignedBox.color};">${assignedBox.length}x${assignedBox.width}x${assignedBox.height}</span>` 
+            : ''  
         };
       });
-
+  
       setResults(processedResults);
     } catch (error) {
       console.error('Processing error:', error);
     }
     setIsProcessing(false);
   };
+  
   // 📊 Define table columns
   const columns = React.useMemo(
     () => [
@@ -156,7 +188,7 @@ function BoxOptimizer() {
           <h2>Available Box Sizes</h2>
           <div className="box-list">
             {availableBoxes.map((box, index) => (
-              <span key={index} className="box-tag">
+              <span key={index} className="box-tag" style={{ backgroundColor: box.color }}>
                 {`${box.length}x${box.width}x${box.height}`}
               </span>
             ))}
@@ -185,12 +217,18 @@ function BoxOptimizer() {
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map(column => (
                     <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className="sortable-header"
-                    >
-                      {column.render('Header')}
-                      <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                    </th>
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    className={`sortable-header ${column.isSorted ? (column.isSortedDesc ? 'desc' : 'asc') : ''}`}
+                  >
+                    {column.render('Header')}
+                    <span className="sort-icon">
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' 🔽' // descending
+                          : ' 🔼' // ascending
+                        : ' ⇅'}  {/* Default sort indicator */}
+                    </span>
+                  </th>
                   ))}
                 </tr>
               ))}
@@ -200,13 +238,23 @@ function BoxOptimizer() {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    ))}
+                    {row.cells.map(cell => {
+                      if (cell.column.id === 'boxAssigned') {
+                        // Render the Box Tag in the "Box Assigned" column
+                        return (
+                          <td {...cell.getCellProps()}>
+                            <span dangerouslySetInnerHTML={{ __html: row.original.boxTag }} />
+                          </td>
+                        );
+                      }
+                      // Default rendering for other cells
+                      return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                    })}
                   </tr>
                 );
               })}
             </tbody>
+
           </table>
         </div>
       
@@ -244,12 +292,12 @@ function BoxOptimizer() {
           text-align: left;
         }
         .results-table th {
-          background-color: #f5f5f5;
+          background-color: #e3447b;
         }
         button {
           padding: 12px 24px;
-          background: #ff4f87; 
-          color: black;
+          background: #e3447b; 
+          color: white;
           font-weight: bold;
           border: none;
           border-radius: 8px; 
@@ -258,7 +306,7 @@ function BoxOptimizer() {
           transition: background 0.2s ease-in-out;
         }
         button:hover {
-          background: #e04378; /* Slightly darker pink on hover */
+          background: #e96b97; /* Slightly darker pink on hover */
         }
         button:disabled {
           background: #cccccc;

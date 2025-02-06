@@ -85,3 +85,16 @@ button:disabled {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.box-tag {
+  padding: 5px 10px;
+  background: #fbd3e3; /* Default background */
+  border-radius: 4px;
+  color: rgba(10, 10, 10, 0.665);
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+}
+
+
+
