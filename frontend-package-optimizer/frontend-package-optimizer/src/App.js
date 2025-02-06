@@ -104,11 +104,11 @@ function BoxOptimizer() {
           onChange={handleFileUpload}
         />
 
-        <div style={{ textAlign: 'center', margin: '10px 0', fontWeight: 'bold' }}>
+        <div style={{ textAlign: 'left', margin: '10px 0', fontWeight: 'bold' }}>
           OR
         </div>
 
-        <button onClick={handleDemoUpload}>Upload Demo CSV</button>
+        <button onClick={handleDemoUpload}>Use Demo CSV</button>
       </div>
 
       {/* Available Boxes Display */}
@@ -186,7 +186,7 @@ function BoxOptimizer() {
         }
         .box-tag {
           padding: 5px 10px;
-          background: #e0f0ff;
+          background: #fbd3e3;
           border-radius: 4px;
         }
         .results-table {
@@ -202,12 +202,18 @@ function BoxOptimizer() {
           background-color: #f5f5f5;
         }
         button {
-          padding: 10px 20px;
-          background: #0070f3;
-          color: white;
+          padding: 12px 24px;
+          background: #ff4f87; 
+          color: black;
+          font-weight: bold;
           border: none;
-          border-radius: 4px;
+          border-radius: 8px; 
           cursor: pointer;
+          box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+          transition: background 0.2s ease-in-out;
+        }
+        button:hover {
+          background: #e04378; /* Slightly darker pink on hover */
         }
         button:disabled {
           background: #cccccc;
