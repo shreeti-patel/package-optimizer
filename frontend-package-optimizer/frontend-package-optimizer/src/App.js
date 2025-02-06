@@ -163,49 +163,62 @@ function BoxOptimizer() {
   );
 
   return (
+    
+
     <div className="container">
-      <h1>Box Assignment Optimizer</h1>
+      <div className="header">
+        <h1>Box Assignment Optimizer</h1>
+    </div>
       
-      {/* File Upload Section */}
-      <div className="section">
-        <h2>1. Import CSV</h2>
-        <input 
-          type="file" 
-          accept=".csv" 
-          onChange={handleFileUpload}
-        />
+  {/* File Upload Section */}
+    <div className="section file-upload">
+      <h2>Import CSV</h2>
 
-        <div style={{ textAlign: 'left', margin: '10px 0', fontWeight: 'bold' }}>
-          OR
-        </div>
+      <div className="file-upload-container">
+        <label className="file-upload-label">
+          <input 
+            type="file" 
+            accept=".csv" 
+            onChange={handleFileUpload} 
+            className="file-input"
+          />
+          Choose File
+        </label>
 
-        <button onClick={handleDemoUpload}>Use Demo CSV</button>
+        <div className="divider">OR</div>
+
+        <button className="demo-upload-btn" onClick={handleDemoUpload}>
+          Use Demo CSV
+        </button>
       </div>
+    </div>
 
-      {/* Available Boxes Display */}
-      {availableBoxes.length > 0 && (
-        <div className="section">
-          <h2>Available Box Sizes</h2>
-          <div className="box-list">
-            {availableBoxes.map((box, index) => (
-              <span key={index} className="box-tag" style={{ backgroundColor: box.color }}>
-                {`${box.length}x${box.width}x${box.height}`}
-              </span>
-            ))}
-          </div>
+      
+{/* Available Boxes Display */}
+  {availableBoxes.length > 0 && (
+    <div className="section">
+      <h2>Available Box Sizes</h2>
+      <div className="box-list-container">
+        <div className="box-list">
+          {availableBoxes.map((box, index) => (
+            <span key={index} className="box-tag" style={{ backgroundColor: box.color }}>
+              {`${box.length}x${box.width}x${box.height}`}
+            </span>
+          ))}
         </div>
-      )}
-
-      {/* Processing Button */}
-      <div className="section">
-        <h2>2. Run Box Assignment</h2>
         <button 
+          className="run-assignment-button"
           onClick={processOrders} 
           disabled={!orders.length || isProcessing}
         >
           {isProcessing ? 'Processing...' : 'Run Box Assignment'}
         </button>
       </div>
+    </div>
+  )}
+
+
+
 
       {/* Results Table */}
         {results.length > 0 && (
@@ -292,11 +305,11 @@ function BoxOptimizer() {
           text-align: left;
         }
         .results-table th {
-          background-color: #e3447b;
+          background-color: #4a4a4c;
         }
         button {
           padding: 12px 24px;
-          background: #e3447b; 
+          background: #e32366; 
           color: white;
           font-weight: bold;
           border: none;
