@@ -174,7 +174,69 @@ function BoxOptimizer() {
     <div className="header-container">
         
     </div>
-    
+    <section className="what-it-does">
+      <h3><strong> 💡 What It Does</strong></h3>
+      <p>The <strong>Package Optimizer</strong> helps warehouse teams identify the <strong>smallest possible box for a bulk order of products</strong>. By minimizing box size, it helps reduce shipping costs, cut packaging material waste, and better protect products with a snug fit. 💡</p>
+      
+      <ol>
+        <li>➡️ Input the deminsions of each product in an order and the available box sizes with a CSV</li>
+        <li>⬆️ Outputs the smallest box that fits all products </li>
+        <li>📈 To handle high volumes of orders, it processes a bulk CSV file containing multiple orders at once.</li>
+      </ol>
+    </section>
+
+    <section className="why-it-matters">
+      <h3><strong>Why It Matters</strong></h3>
+      <p>Optimizing box sizes is not just about neat packaging—it’s crucial for:</p>
+      <ul>
+        <li>💸 Lower shipping fees due to reduced dimensional weight.</li>
+        <li>🌱 Less packaging waste (paper, bubble wrap, etc.).</li>
+        <li>🔒 Fewer damages from products shifting during transit.</li>
+      </ul>
+      <p>This tool automates the process, ensuring each order is packed as efficiently as possible.</p>
+    </section>
+
+    <section className="how-to-use">
+      <h3><strong>How to Use</strong></h3>
+      <ol>
+        <li>📥 <strong>Upload a CSV file</strong> with your order details (check the CSV format below).</li>
+        <li>🖱️ <strong>Or</strong> Click "<strong>Use Demo CSV</strong>" to test the tool with a sample dataset.</li>
+        <li>🔍 Click <strong>Run Box Assignment</strong> to run the alogrithm on all the orders and suggest the smallest suitable box for each order based on product dimensions.</li>
+      </ol>
+    </section>
+
+    <section className="csv-format">
+      <h3><strong>CSV Format</strong></h3>
+      <p>Ensure your CSV file includes the following columns (headers must match exactly):</p>
+      <ul>
+        <li><strong>Type</strong> – Either "BOX" or "ORDER".</li>
+        <li><strong>Length</strong> – Length of the item (in inches). 📏</li>
+        <li><strong>Width</strong> – Width of the item (in inches). 📐</li>
+        <li><strong>Height</strong> – Height of the item (in inches). 📏</li>
+      </ul>
+      <p>Each row represents either a box size or an order. Orders with multiple products should list each product's length width and height deminemtions of the same row.</p>
+    </section>
+
+    <section className="example-csv">
+      <h3><strong>Example CSV Format</strong></h3>
+      <pre>
+{`BOX,5,5,5
+BOX,10,10,10
+BOX,15,15,15
+BOX,20,20,20
+ORDER,3,4,6
+ORDER,2,2,2,4,4,4
+ORDER,5,5,5
+ORDER,6,4,2
+ORDER,7,2,5
+ORDER,3,4,3
+ORDER,12,12,12`}
+      </pre>
+    </section>
+
+    <section className="final-note">
+      <p>Once you upload your file, the Package Optimizer will return the optimal box size for each order, helping you ship smarter, not harder! 📦</p>
+    </section>
   {/* File Upload Section */}
     <div className="section file-upload">
       <h2>Import CSV</h2>
