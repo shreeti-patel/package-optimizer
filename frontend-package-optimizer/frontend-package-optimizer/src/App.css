@@ -4,7 +4,7 @@
   max-width: 1100px;
   margin: 0 auto;
   font-family: 'Inter', sans-serif;
-  background: #f3f6fa;
+  background: #f6f4f1;
 }
 
 /* Sections */
@@ -15,7 +15,10 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+body {
+  margin: 0; /* Ensure no default margin */
+  padding: 0;
+}
 /* Button */
 button {
   padding: 12px 20px;
@@ -45,6 +48,8 @@ button:disabled {
   overflow: hidden;
   border-radius: 8px;
   background: white;
+  overflow: visible;
+  height: auto;
 }
 
 .results-table th, .results-table td {
@@ -80,8 +85,7 @@ button:disabled {
 
 /* Scrollable Table */
 .table-container {
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: auto;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -96,24 +100,15 @@ button:disabled {
   display: inline-block;
 }
 
-/* Black header at the top */
-.header {
-  background-color: black;
-  padding: 20px;
-  text-align: center;
-  border-radius: 0 0 10px 10px; /* Optional: to make the header edges rounded */
+.header-container {
+  background-image: url('/public/Box Assignment Optimizer.png'); /* Path to your image */
+  background-size: cover; /* Ensure the image covers the container */
+  background-position: center top; /* Center the image */
+  height: 390px; /* Adjust to fit your image */
+  display: flex;
 }
 
-/* Professional looking title */
-.header h1 {
-  color: white; /* White text on black background */
-  font-family: 'Helvetica', sans-serif; /* Use a clean, professional font */
-  font-size: 36px; /* Adjust the font size to your preference */
-  font-weight: 600; /* Slightly bold to make it stand out */
-  letter-spacing: 2px; /* Adds spacing between letters for a more polished look */
-  text-transform: uppercase; /* Uppercase for a more professional feel */
-  margin: 0; /* Removes default margin */
-}
+
 
 .button-container {
   display: flex;

@@ -116,9 +116,14 @@ function BoxOptimizer() {
             ? `<span class="box-tag" style="background-color:${assignedBox.color};">${assignedBox.length}x${assignedBox.width}x${assignedBox.height}</span>` 
             : ''  
         };
+        
       });
   
       setResults(processedResults);
+      const resultsSection = document.getElementById('results-section');
+      if (resultsSection) {
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+      }
     } catch (error) {
       console.error('Processing error:', error);
     }
@@ -165,11 +170,11 @@ function BoxOptimizer() {
   return (
     
 
-    <div className="container">
-      <div className="header">
-        <h1>Box Assignment Optimizer</h1>
+  <div className="container">
+    <div className="header-container">
+        
     </div>
-      
+    
   {/* File Upload Section */}
     <div className="section file-upload">
       <h2>Import CSV</h2>
@@ -196,7 +201,7 @@ function BoxOptimizer() {
       
 {/* Available Boxes Display */}
   {availableBoxes.length > 0 && (
-    <div className="section">
+    <div className="section" ref={(el) => el && el.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
       <h2>Available Box Sizes</h2>
       <div className="box-list-container">
         <div className="box-list">
@@ -222,7 +227,7 @@ function BoxOptimizer() {
 
       {/* Results Table */}
         {results.length > 0 && (
-          <div className="section table-container">
+          <div id="results-section" className="section table-container" ref={(el) => el && el.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
           <h2>Results</h2>
           <table {...getTableProps()} className="results-table">
             <thead>
@@ -256,7 +261,11 @@ function BoxOptimizer() {
                         // Render the Box Tag in the "Box Assigned" column
                         return (
                           <td {...cell.getCellProps()}>
-                            <span dangerouslySetInnerHTML={{ __html: row.original.boxTag }} />
+                            {row.original.boxTag ? (
+                              <span dangerouslySetInnerHTML={{ __html: row.original.boxTag }} />
+                            ) : (
+                              <span style={{ color: 'grey' }}>Multiple Boxes Needed</span>
+                            )}
                           </td>
                         );
                       }

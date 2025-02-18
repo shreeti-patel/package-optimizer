@@ -38,7 +38,7 @@ public class BoxOptimizationService {
                 .collect(Collectors.toList());
 
         for (OrderRequest order : bulkRequest.getOrders()) {
-            String result = "Box not found";
+            String result = "Multiple boxes needed";
             for (Box box : sortedBoxes) {
                 if (canFitProductsInBox(order.getProducts(), box)) {
                     result = formatBoxDimensions(box);

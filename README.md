@@ -1,13 +1,14 @@
 ### To Do:
-
+- [X] Add "More than box needed" for empty 
+- [X] Add auto scroll to the results table being populated
+- [ ] Make demo CSV have decimal point boxes
 - [ ] Make sure backend logic make sense
-- [ ] Implement a greedy first fit algorithm
 - [ ] Add remove Box or product functionality
 - [ ] Add Box name or lables (Box 1 or Box A)
-- [ ] Figure out 2D vs 3D visualization or do the bulk upload option 
+- [X] Figure out 2D vs 3D visualization or do the bulk upload option 
 - [ ] Write tests for backend if feeling it
 - [ ] Review code base
-- [ ] Make front -end look nice
+- [X] Make front -end look nice
 
 How is it finding a smallest box?
 - Greedy Algorithm
@@ -27,6 +28,7 @@ Requirments for program:
 Benefits of smaller boxese:
 - lower shipping costs
 - Less packaging material
+- snug fit = less damage , you can you packing paper but it costs and wastes
 
 
 
