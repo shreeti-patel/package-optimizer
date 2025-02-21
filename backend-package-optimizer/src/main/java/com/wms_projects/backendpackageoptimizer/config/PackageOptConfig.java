@@ -13,7 +13,7 @@ public class PackageOptConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("https://package-optimizer.vercel.app/")
+                        .allowedOrigins("https://package-optimizer.vercel.app")
                         .allowedMethods("POST", "GET");
             }
         };
