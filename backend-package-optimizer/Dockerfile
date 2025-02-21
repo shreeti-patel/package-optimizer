@@ -22,7 +22,7 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Expose the port the app runs on (change if needed)
-EXPOSE 8080
+EXPOSE 10000
 
 # Run the Spring Boot app
 CMD ["java", "-jar", "target/backend-package-optimizer-0.0.1-SNAPSHOT.jar"]
