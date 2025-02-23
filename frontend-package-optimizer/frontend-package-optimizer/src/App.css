@@ -110,9 +110,9 @@ button:disabled {
 
 @media (max-width: 768px) {
   .header-container {
-    padding-top: 50%;           /* Taller aspect ratio for mobile */
-    background-size: cover;     /* Fill mobile screen width */
-    max-width: 100%;            /* Remove desktop width constraint */
+    padding-top: 43.5%;           /* Taller aspect ratio for mobile */
+    background-size: contain;     /* Fill mobile screen width */
+    min-height: 250px;            /* Remove desktop width constraint */
   }
 }
 
