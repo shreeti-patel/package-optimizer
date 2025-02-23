@@ -113,7 +113,7 @@ button:disabled {
     padding-top: 50%;          
     background-size: 100% auto;;     
     height: auto;   
-    min-height: 150px;
+    min-height: 70px;
   }
 }
 
