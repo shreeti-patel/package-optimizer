@@ -106,6 +106,7 @@ button:disabled {
   background-position: center top; 
   height: 390px; 
   display: flex;
+  background-repeat: no-repeat;
 }
 
 @media (max-width: 768px) {
