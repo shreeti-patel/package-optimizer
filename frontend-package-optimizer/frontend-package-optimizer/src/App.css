@@ -108,7 +108,13 @@ button:disabled {
   display: flex;
 }
 
-
+@media (max-width: 768px) {
+  .header-container {
+    padding-top: 50%;           /* Taller aspect ratio for mobile */
+    background-size: cover;     /* Fill mobile screen width */
+    max-width: 100%;            /* Remove desktop width constraint */
+  }
+}
 
 .button-container {
   display: flex;
