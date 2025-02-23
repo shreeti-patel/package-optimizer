@@ -16,7 +16,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 body {
-  margin: 0; /* Ensure no default margin */
+  margin: 0; 
   padding: 0;
 }
 /* Button */
@@ -101,50 +101,51 @@ button:disabled {
 }
 
 .header-container {
-  background-image: url('/public/Box Assignment Optimizer.png'); /* Path to your image */
-  background-size: cover; /* Ensure the image covers the container */
-  background-position: center top; /* Center the image */
-  height: 390px; /* Adjust to fit your image */
+  background-image: url('/public/Box Assignment Optimizer.png');
+  background-size: cover; 
+  background-position: center top; 
+  height: 390px; 
   display: flex;
 }
 
 @media (max-width: 768px) {
   .header-container {
-    padding-top: 43.5%;           /* Taller aspect ratio for mobile */
-    background-size: contain;     /* Fill mobile screen width */
-    min-height: 250px;            /* Remove desktop width constraint */
+    padding-top: 50%;          
+    background-size: 100% auto;;     
+    height: auto;   
+    min-height: 150px;
   }
 }
 
 .button-container {
   display: flex;
-  justify-content: flex-start; /* Aligns button to the left */
-  margin-top: 10px; /* Adds some spacing between boxes and button */
+  justify-content: flex-start; 
+  margin-top: 10px; 
 }
 
 .box-container {
   display: flex;
-  align-items: center; /* Aligns button and boxes vertically */
-  gap: 15px; /* Adds space between button and boxes */
+  align-items: center; 
+  gap: 15px; 
 }
 
 .box-list {
   display: flex;
-  flex-wrap: wrap; /* Allows multiple rows if needed */
-  gap: 10px; /* Adds spacing between box tags */
+  flex-wrap: wrap; 
+  gap: 10px; 
 }
 .box-list-container {
   display: flex;
-  align-items: center; /* Align items vertically */
-  justify-content: space-between; /* Space between box tags and button */
-  flex-wrap: wrap; /* Ensures proper wrapping if needed */
-  gap: 10px; /* Adds spacing between elements */
+  align-items: center; 
+  justify-content: space-between; 
+  flex-wrap: wrap; 
+  gap: 10px; 
 }
 
 .box-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px; /* Adds spacing between box tags */
+  gap: 8px; 
 }
 
 .run-assignment-button {
@@ -156,7 +157,7 @@ button:disabled {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-left: auto; /* Pushes the button to the right */
+  margin-left: auto; 
 }
 
 .run-assignment-button:disabled {
@@ -171,7 +172,7 @@ button:disabled {
 .file-upload {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align everything to the left */
+  align-items: flex-start; 
   
   gap: 10px;
   padding: 15px 20px;
