@@ -9,6 +9,7 @@
 - [ ] Write tests for backend if feeling it
 - [ ] Review code base
 - [X] Make front -end look nice
+- [ ] Add a "clear all" button to clear all products and boxes from the input form
 
 How is it finding a smallest box?
 - Greedy Algorithm

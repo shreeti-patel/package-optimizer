@@ -99,24 +99,23 @@ function BoxOptimizer() {
         }
       );
   
-      // Map results to orders with box color and size information
       const processedResults = response.data.map((line, index) => {
         const parts = line.split(',');
+        const boxDimensions = parts[parts.length - 1].split('x').map(dim => parseFloat(dim));
         const assignedBox = availableBoxes.find(
-          box => box.length === parseInt(parts[parts.length - 1].split('x')[0]) &&
-                 box.width === parseInt(parts[parts.length - 1].split('x')[1]) &&
-                 box.height === parseInt(parts[parts.length - 1].split('x')[2])
+          box => Math.abs(box.length - boxDimensions[0]) < 0.001 &&
+                 Math.abs(box.width - boxDimensions[1]) < 0.001 &&
+                 Math.abs(box.height - boxDimensions[2]) < 0.001
         );
         return {
           orderNumber: orders[index].id,
           products: orders[index].products,
           boxAssigned: parts[parts.length - 1],
-          boxColor: assignedBox ? assignedBox.color : '#FFFFFF', // default to white if no box found
+          boxColor: assignedBox ? assignedBox.color : '#FFFFFF',
           boxTag: assignedBox 
-            ? `<span class="box-tag" style="background-color:${assignedBox.color};">${assignedBox.length}x${assignedBox.width}x${assignedBox.height}</span>` 
+            ? `<span class="box-tag" style="background-color:${assignedBox.color};">${boxDimensions[0].toFixed(1)}x${boxDimensions[1].toFixed(1)}x${boxDimensions[2].toFixed(1)}</span>` 
             : ''  
         };
-        
       });
   
       setResults(processedResults);
