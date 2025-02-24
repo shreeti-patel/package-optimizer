@@ -99,6 +99,11 @@ function BoxOptimizer() {
         }
       );
   
+      const formatDimension = (num) => {
+        // If the number has no decimal places or ends in .0, return as integer
+        return Number.isInteger(num) || num % 1 === 0 ? Math.floor(num) : num.toFixed(1);
+      };
+
       const processedResults = response.data.map((line, index) => {
         const parts = line.split(',');
         const boxDimensions = parts[parts.length - 1].split('x').map(dim => parseFloat(dim));
@@ -113,7 +118,8 @@ function BoxOptimizer() {
           boxAssigned: parts[parts.length - 1],
           boxColor: assignedBox ? assignedBox.color : '#FFFFFF',
           boxTag: assignedBox 
-            ? `<span class="box-tag" style="background-color:${assignedBox.color};">${boxDimensions[0].toFixed(1)}x${boxDimensions[1].toFixed(1)}x${boxDimensions[2].toFixed(1)}</span>` 
+            ? `<span class="box-tag" style="background-color:${assignedBox.color};">` +
+              `${formatDimension(boxDimensions[0])}x${formatDimension(boxDimensions[1])}x${formatDimension(boxDimensions[2])}</span>` 
             : ''  
         };
       });
@@ -143,7 +149,7 @@ function BoxOptimizer() {
           <div>
             {value.map((product, idx) => (
               <div key={idx}>
-                📦 {product.length}x{product.width}x{product.height}
+                📦 {formatDimension(product.length)}x{formatDimension(product.width)}x{formatDimension(product.height)}
               </div>
             ))}
           </div>
@@ -186,7 +192,7 @@ function BoxOptimizer() {
 
     <section className="why-it-matters">
       <h3><strong>Why It Matters</strong></h3>
-      <p>Optimizing box sizes is not just about neat packaging—it’s crucial for:</p>
+      <p>Optimizing box sizes is not just about neat packaging—it's crucial for:</p>
       <ul>
         <li>💸 Lower shipping fees due to reduced dimensional weight.</li>
         <li>🌱 Less packaging waste (paper, bubble wrap, etc.).</li>
