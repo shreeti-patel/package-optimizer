@@ -1,6 +1,7 @@
 # **Advanced Packaging Optimization**  
 *Optimizing Product Placement into the Smallest Possible Box*
 
+Access the live demo: [Package Optimizer](https://package-optimizer.vercel.app/)
 ---
 
 ## **1. Classes Overview**  
