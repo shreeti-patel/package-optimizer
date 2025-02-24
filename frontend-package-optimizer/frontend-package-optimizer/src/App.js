@@ -183,7 +183,7 @@ function BoxOptimizer() {
       <p>The <strong>Package Optimizer</strong> helps warehouse teams identify the <strong>smallest possible box needed for an order of products</strong> in large volumes. Minimizing box size, helps reduce shipping costs, cut packaging material waste, and better protect products with a snug fit. 💡</p>
       
       <ol>
-        <li>➡️ Input the deminsions of each product in an order and the available box sizes with a CSV</li>
+        <li>➡️ Input the demensions of each product in an order and the available box sizes with a CSV</li>
         <li>⬆️ Outputs the smallest box that fits all products </li>
         <li>📈 To handle high volumes of orders, it processes a bulk CSV file containing multiple orders at once.</li>
       </ol>
