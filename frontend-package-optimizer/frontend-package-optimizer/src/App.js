@@ -9,6 +9,10 @@ function BoxOptimizer() {
   const [results, setResults] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Add formatDimension function here
+  const formatDimension = (num) => {
+    return Number.isInteger(num) || num % 1 === 0 ? Math.floor(num) : num.toFixed(1);
+  };
 
   // Handle CSV file upload
   const handleFileUpload = (event) => {
@@ -99,11 +103,6 @@ function BoxOptimizer() {
         }
       );
   
-      const formatDimension = (num) => {
-        // If the number has no decimal places or ends in .0, return as integer
-        return Number.isInteger(num) || num % 1 === 0 ? Math.floor(num) : num.toFixed(1);
-      };
-
       const processedResults = response.data.map((line, index) => {
         const parts = line.split(',');
         const boxDimensions = parts[parts.length - 1].split('x').map(dim => parseFloat(dim));
