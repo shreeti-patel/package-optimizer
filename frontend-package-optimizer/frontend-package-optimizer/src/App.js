@@ -176,7 +176,7 @@ function BoxOptimizer() {
     </div>
     <section className="what-it-does">
       <h3><strong> 💡 What It Does</strong></h3>
-      <p>The <strong>Package Optimizer</strong> helps warehouse teams identify the <strong>smallest possible box needed for an order of products</strong>in large volumes. Minimizing box size, helps reduce shipping costs, cut packaging material waste, and better protect products with a snug fit. 💡</p>
+      <p>The <strong>Package Optimizer</strong> helps warehouse teams identify the <strong>smallest possible box needed for an order of products</strong> in large volumes. Minimizing box size, helps reduce shipping costs, cut packaging material waste, and better protect products with a snug fit. 💡</p>
       
       <ol>
         <li>➡️ Input the deminsions of each product in an order and the available box sizes with a CSV</li>
@@ -203,7 +203,7 @@ function BoxOptimizer() {
         <li>🖱️ <strong>Or</strong> Click "<strong>Use Demo CSV</strong>" to test the tool with a sample dataset.</li>
         <li>🔍 Click <strong>Run Box Assignment</strong> to run the alogrithm on all the orders and suggest the smallest suitable box for each order based on product dimensions.</li>
       </ol>
-      <p>Additionally, you can sort each column in the table. Sort based on box size to pack all orders of one box size first.</p>
+      <p>Additionally, you can sort each column in the table. Sort based on box size to pack all orders of the same box size first.</p>
     </section>
 
     <section className="csv-format">
